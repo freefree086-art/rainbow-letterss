@@ -1,0 +1,272 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>عالم الحروف مع قوس قزح</title>
+
+<style>
+body {
+  margin: 0;
+  padding: 15px;
+  text-align: center;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg,#fff0f6,#e9f5ff,#fff5d9);
+  color: #55446b;
+}
+
+header {
+  background: white;
+  padding: 20px 10px;
+  border-radius: 25px;
+  margin-bottom: 18px;
+  box-shadow: 0 4px 12px #ddd;
+}
+
+.rainbow {
+  font-size: 65px;
+}
+
+h1 {
+  color: #c45b9b;
+  font-size: 27px;
+}
+
+.creator {
+  color: #777;
+  font-size: 15px;
+}
+
+h2 {
+  color: #8757a8;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 10px;
+  max-width: 650px;
+  margin: auto;
+}
+
+.card {
+  background: white;
+  border: 2px solid #efc5e0;
+  border-radius: 18px;
+  padding: 12px 3px;
+  cursor: pointer;
+  box-shadow: 0 3px 7px #ddd;
+}
+
+.card:active {
+  background: #ffe1f0;
+}
+
+.letter {
+  font-size: 38px;
+  font-weight: bold;
+  color: #8c55b7;
+}
+
+.picture {
+  font-size: 35px;
+  margin: 5px;
+}
+
+.word {
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.sound {
+  font-size: 20px;
+}
+
+button {
+  border: none;
+  border-radius: 20px;
+  background: #d779ad;
+  color: white;
+  padding: 13px 22px;
+  font-size: 17px;
+  margin: 8px;
+  cursor: pointer;
+}
+
+.game {
+  background: white;
+  border-radius: 22px;
+  padding: 18px;
+  margin: 25px auto;
+  max-width: 550px;
+  box-shadow: 0 4px 12px #ddd;
+}
+
+#choices {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+footer {
+  margin: 25px 0;
+  color: #a05d91;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="rainbow">🌈</div>
+  <h1>عالم الحروف مع قوس قزح</h1>
+  <p>هيا نتعلم الحروف ونستمتع معاً! ⭐</p>
+  <div class="creator">
+    إعداد وتصميم إسراء ابوداوود
+  </div>
+</header>
+
+<h2>🔤 حروفي العربية</h2>
+<p>اضغط على الحرف لتسمع اسمه وكلمته</p>
+
+<div class="container" id="letters"></div>
+
+<div class="game">
+  <h2>🎮 لعبة قوس قزح</h2>
+  <p id="question">اضغط ابدأ لنلعب!</p>
+  <div id="choices"></div>
+  <p id="result"></p>
+  <button onclick="startGame()">ابدأ اللعبة 🌟</button>
+</div>
+
+<footer>
+  🌸 بالتعلم نكبر ونبدع 🌸
+</footer>
+
+<script>
+
+const alphabet = [
+["أ","ألف","أرنب","🐰"],
+["ب","باء","بطة","🦆"],
+["ت","تاء","تفاحة","🍎"],
+["ث","ثاء","ثعلب","🦊"],
+["ج","جيم","جمل","🐪"],
+["ح","حاء","حصان","🐴"],
+["خ","خاء","خروف","🐑"],
+["د","دال","دب","🐻"],
+["ذ","ذال","ذرة","🌽"],
+["ر","راء","رمان","🍎"],
+["ز","زاي","زهرة","🌸"],
+["س","سين","سمكة","🐟"],
+["ش","شين","شمس","☀️"],
+["ص","صاد","صقر","🦅"],
+["ض","ضاد","ضفدع","🐸"],
+["ط","طاء","طائرة","✈️"],
+["ظ","ظاء","ظرف","✉️"],
+["ع","عين","عنب","🍇"],
+["غ","غين","غزال","🦌"],
+["ف","فاء","فراشة","🦋"],
+["ق","قاف","قمر","🌙"],
+["ك","كاف","كتاب","📚"],
+["ل","لام","ليمون","🍋"],
+["م","ميم","موز","🍌"],
+["ن","نون","نحلة","🐝"],
+["ه","هاء","هلال","🌙"],
+["و","واو","وردة","🌹"],
+["ي","ياء","يد","✋"]
+];
+
+function speak(text) {
+  if (!("speechSynthesis" in window)) {
+    alert("الصوت غير مدعوم في هذا المتصفح");
+    return;
+  }
+
+  speechSynthesis.cancel();
+
+  let voice = new SpeechSynthesisUtterance(text);
+  voice.lang = "ar-SA";
+  voice.rate = 0.8;
+
+  speechSynthesis.speak(voice);
+}
+
+const container = document.getElementById("letters");
+
+alphabet.forEach(item => {
+
+  let card = document.createElement("div");
+  card.className = "card";
+
+  card.innerHTML = `
+    <div class="letter">${item[0]}</div>
+    <div class="picture">${item[3]}</div>
+    <div class="word">${item[2]}</div>
+    <div class="sound">🔊</div>
+  `;
+
+  card.onclick = () => {
+    speak(item[1] + "، " + item[2]);
+  };
+
+  container.appendChild(card);
+});
+
+let correct;
+
+function startGame() {
+
+  correct = alphabet[
+    Math.floor(Math.random() * alphabet.length)
+  ];
+
+  document.getElementById("question").innerHTML =
+    "أين الحرف الذي يبدأ به اسم " +
+    correct[2] + "؟ " + correct[3];
+
+  document.getElementById("result").innerHTML = "";
+
+  let choices = [correct];
+
+  while (choices.length < 3) {
+    let random = alphabet[
+      Math.floor(Math.random() * alphabet.length)
+    ];
+
+    if (!choices.includes(random)) {
+      choices.push(random);
+    }
+  }
+
+  choices.sort(() => Math.random() - 0.5);
+
+  let area = document.getElementById("choices");
+  area.innerHTML = "";
+
+  choices.forEach(item => {
+    let button = document.createElement("button");
+    button.innerHTML = item[0];
+
+    button.onclick = () => {
+
+      let result = document.getElementById("result");
+
+      if (item === correct) {
+        result.innerHTML = "🎉 أحسنت! إجابة صحيحة";
+        speak("أحسنت! إجابة صحيحة");
+      } else {
+        result.innerHTML = "حاول مرة أخرى يا بطل 💪";
+        speak("حاول مرة أخرى");
+      }
+    };
+
+    area.appendChild(button);
+  });
+}
+
+</script>
+
+</body>
+</html>
